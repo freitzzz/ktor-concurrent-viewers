@@ -2,9 +2,26 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Ktor - Hello World (Counter)</title>
+    <title>Ktor - Concurrent Viewers</title>
+
+    <script>
+        const socket = new WebSocket('ws://{{host}}:{{port}}/');
+
+        socket.onopen = function () {
+            console.log('WebSocket connection opened');
+        };
+
+        socket.onmessage = function (event) {
+            console.log('Received message:', event.data);
+
+            const data = `${event.data}`.split(",");
+            document.getElementById("counter").textContent = data[0];
+            document.getElementById("ram").textContent = data[1];
+        };
+    </script>
 </head>
 <body>
-    <span>This page was viewed {{counter}} times.</span>
+<span>Users online: <span id="counter">{{counter}}</span></span>
+<span>Server memory usage: <span id="ram">{{ram}}</span>MB</span>
 </body>
 </html>
